@@ -89,7 +89,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 		//simulate the game
 		background_render();
 		clear_screen(0xff5500);
-		draw_rect(50, 50, 200, 500, 0x00ff22);
+		draw_rect(300, 100, 0.2, 0.2, 0x00ff22);
 		//render the bitmap onto the window
 		StretchDIBits(hdc, 0, 0, render.width, render.height, 0, 0, render.width, render.height, render.memory, &render.buffer_bitmap_info, DIB_RGB_COLORS, SRCCOPY);
 
