@@ -16,7 +16,7 @@ void clear_screen(unsigned int color)
 			*pixel++ = color;
 }
 
-void draw_rect_(int x0, int y0, int x1, int y1, unsigned int color) //where 0,0 would be the middle of the screen
+void draw_rect_temp(int x0, int y0, int x1, int y1, unsigned int color) //original draw_rect, but 0,0 is bottom left of screen
 {
 	for (int y = y0; y < y1; y++)
 	{

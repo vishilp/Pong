@@ -1,5 +1,7 @@
-#include "utilities.cpp"
+
 #include <windows.h>
+#include "input.h"
+#include <iostream> //for testing
 
 
 bool game_running = true;
@@ -11,9 +13,14 @@ struct Render_state
 	BITMAPINFO buffer_bitmap_info; //bitmap of pixels
 };
 
-Render_state render;
+Render_state render; //optimize by calling this struct as a pointer
+Input input;
+
 
 #include "renderer.cpp"
+#include "game.cpp"
+
+bool pressed = false;
 
 LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM unnamedParam3,LPARAM unnamedParam4) //callback function to process windows' messages
 {
@@ -26,6 +33,20 @@ LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM un
 			game_running = false;
 		}
 		break;
+		case WM_KEYUP:
+		case WM_KEYDOWN:
+		{
+			unsigned int code = (unsigned int)unnamedParam3;
+			switch (code)
+			{
+				case VK_UP:
+				{
+					pressed = true;
+				}
+				case VK_DOWN:
+					break;
+			}
+		}break;
 		case WM_SIZE:
 		{
 			RECT rect;
@@ -82,14 +103,23 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 		//handle the input from the window
 		MSG message;
 		while (PeekMessage(&message, window, 0 ,0, PM_REMOVE)) { //Peekmessage checks for any messages and copies the data into the MSG struct
-			TranslateMessage(&message);
-			DispatchMessage(&message); //basically calls our callback function
+				TranslateMessage(&message);
+				DispatchMessage(&message); //basically calls our callback function	
 		}
 
 		//simulate the game
-		background_render();
 		clear_screen(0xff5500);
-		draw_rect(300, 100, 0.2, 0.2, 0x00ff22);
+		if (pressed == true)
+		{
+			draw_rect_temp(0, 0, 100, 100, 0x00ff22);
+		}
+		int count = 0;
+		if (count == 0)
+		{
+			draw_rect(300, 100, 0.2, 0.2, 0x00ff22);
+			count++;
+		}
+
 		//render the bitmap onto the window
 		StretchDIBits(hdc, 0, 0, render.width, render.height, 0, 0, render.width, render.height, render.memory, &render.buffer_bitmap_info, DIB_RGB_COLORS, SRCCOPY);
 
