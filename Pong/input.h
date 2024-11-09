@@ -1,15 +1,13 @@
 #pragma once
 
 struct Button {
-	bool pressed;
-	bool changed;
+	bool pressed = false;
+	bool changed = false;
 };
 
 enum {
 	BUTTON_UP,
 	BUTTON_DOWN,
-	BUTTON_LEFT,
-	BUTTON_RIGHT,
 	BUTTON_COUNT
 
 };

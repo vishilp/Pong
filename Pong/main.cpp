@@ -20,7 +20,6 @@ Input input;
 #include "renderer.cpp"
 #include "game.cpp"
 
-bool pressed = false;
 
 LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM unnamedParam3,LPARAM unnamedParam4) //callback function to process windows' messages
 {
@@ -41,7 +40,8 @@ LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM un
 			{
 				case VK_UP:
 				{
-					pressed = true;
+					input.keyboard[BUTTON_UP].pressed = true;
+
 				}
 				case VK_DOWN:
 					break;
@@ -108,17 +108,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 		}
 
 		//simulate the game
-		clear_screen(0xff5500);
-		if (pressed == true)
-		{
-			draw_rect_temp(0, 0, 100, 100, 0x00ff22);
-		}
-		int count = 0;
-		if (count == 0)
-		{
-			draw_rect(300, 100, 0.2, 0.2, 0x00ff22);
-			count++;
-		}
+		simulate_game(&input);
 
 		//render the bitmap onto the window
 		StretchDIBits(hdc, 0, 0, render.width, render.height, 0, 0, render.width, render.height, render.memory, &render.buffer_bitmap_info, DIB_RGB_COLORS, SRCCOPY);
