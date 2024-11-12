@@ -44,6 +44,9 @@ LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM un
 
 				}
 				case VK_DOWN:
+				{
+					input.keyboard[BUTTON_DOWN].pressed = true;
+				}
 					break;
 			}
 		}break;
