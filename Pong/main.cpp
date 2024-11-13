@@ -118,7 +118,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	HWND window= CreateWindow(window_class.lpszClassName, L"Pong Game", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, 0, 0, hInstance, 0);
 	HDC hdc = GetDC(window);
 
-
 	while (game_running)
 	{
 
@@ -130,8 +129,9 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 				DispatchMessage(&message); //basically calls our callback function	
 		}
 
-		//simulate the game
-		simulate_game(&input, render.height);
+		//simulate the game'
+		simulate_game(&input, render.height, render.width);
+		
 
 
 		//render the bitmap onto the window

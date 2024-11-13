@@ -2,7 +2,7 @@
 
 struct Button {
 	bool pressed = false;
-	bool changed = false;
+	//bool changed = false;
 };
 
 enum {

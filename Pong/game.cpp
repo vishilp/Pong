@@ -1,16 +1,18 @@
-int player_yposition= 100;
+float player_yposition= 100.f;
 
-void simulate_game(Input* input, int height)
+void simulate_game(Input* input, int height, int width)
 {
 	
-	clear_screen(0xff5500);
+	background_render();
 	if (input->keyboard[BUTTON_UP].pressed == true)
 	{
-		player_yposition += 1;
+		if (player_yposition+0.9 < height-500) 
+			player_yposition +=0.9;
 	}
 	if (input->keyboard[BUTTON_DOWN].pressed == true)
 	{
-		player_yposition -= 1;
+		player_yposition -= 0.9;
 	}
-	draw_rect(300, player_yposition, 0.2, 0.2, 0x00ff22);
+	draw_rect(width/2-50, player_yposition, 0.05, 0.2, 0xFFFFFF);//right rect
+	draw_rect(-width/2 + 50, 0, 0.05, 0.2, 0xFFFFFF);//left rect
 }

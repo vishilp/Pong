@@ -5,7 +5,11 @@ void background_render()
 	unsigned int* pixel = (unsigned int*)render.memory;
 	for (int y = 0; y < render.height; y++)
 		for (int x = 0; x < render.width; x++)
-			*pixel++ = y * x;
+			if (x < render.width / 2)
+				*pixel++ = 0x2AAA8A;
+			else
+				*pixel++ = 0x2AA080;
+
 }
 
 void clear_screen(unsigned int color)
@@ -28,7 +32,7 @@ void draw_rect_temp(int x0, int y0, int x1, int y1, unsigned int color) //origin
 
 void draw_rect(int x0, int y0, float width, float height, unsigned int color) //where 0,0 would be the middle of the screen
 {
-	//could add checks to make sure rectangle is inside bounds, but will do later
+	//could add checks to make sure drawm rectangle is inside bounds, but will do later
 	x0 = (x0 + render.width / 2);
 	int xleft = x0 - (render.width)*width/2;
 	int xright = x0 + (render.width) * width / 2;
