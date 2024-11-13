@@ -23,9 +23,16 @@ Input input;
 
 LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM unnamedParam3,LPARAM unnamedParam4) //callback function to process windows' messages
 {
+	bool has_focus = true; //make sure your keyboard input isnt registered when window out of focus
 	LRESULT result = 0;
 	switch (unnamedParam2)
-	{
+	{	
+		case WM_KILLFOCUS:
+			has_focus = false;
+			break;
+		case WM_SETFOCUS:
+			has_focus = true;
+			break;
 		case WM_CLOSE:
 		case WM_DESTROY:
 		{
@@ -33,6 +40,20 @@ LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM un
 		}
 		break;
 		case WM_KEYUP:
+		{
+			unsigned int code = (unsigned int)unnamedParam3;
+			switch (code)
+			{
+			case VK_UP:
+			{
+				input.keyboard[BUTTON_UP].pressed = false;
+			}break;
+			case VK_DOWN:
+			{
+				input.keyboard[BUTTON_DOWN].pressed = false;
+			}break;
+			}
+		}break;
 		case WM_KEYDOWN:
 		{
 			unsigned int code = (unsigned int)unnamedParam3;
@@ -41,13 +62,11 @@ LRESULT CALLBACK Window_callback(HWND unnamedParam1,UINT unnamedParam2,WPARAM un
 				case VK_UP:
 				{
 					input.keyboard[BUTTON_UP].pressed = true;
-
-				}
+				}break;
 				case VK_DOWN:
 				{
 					input.keyboard[BUTTON_DOWN].pressed = true;
-				}
-					break;
+				}break;
 			}
 		}break;
 		case WM_SIZE:
@@ -105,13 +124,15 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
 		//handle the input from the window
 		MSG message;
+
 		while (PeekMessage(&message, window, 0 ,0, PM_REMOVE)) { //Peekmessage checks for any messages and copies the data into the MSG struct
 				TranslateMessage(&message);
 				DispatchMessage(&message); //basically calls our callback function	
 		}
 
 		//simulate the game
-		simulate_game(&input);
+		simulate_game(&input, render.height);
+
 
 		//render the bitmap onto the window
 		StretchDIBits(hdc, 0, 0, render.width, render.height, 0, 0, render.width, render.height, render.memory, &render.buffer_bitmap_info, DIB_RGB_COLORS, SRCCOPY);
